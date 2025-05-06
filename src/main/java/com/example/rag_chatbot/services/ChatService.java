@@ -10,12 +10,19 @@ import com.example.rag_chatbot.models.ChatHistory;
 import com.example.rag_chatbot.models.ChatRequest;
 import com.example.rag_chatbot.models.ChatResponse;
 import com.example.rag_chatbot.models.RephrasedUserInputResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.example.rag_chatbot.utils.ChatUtils.*;
@@ -70,10 +77,16 @@ public class ChatService {
         log.info("messagesArray.size(): {}", messagesArray.size());
         logMessagesArray(messagesArray);
 
-        return ChatResponse.builder()
+        ChatResponse chatResponse = ChatResponse.builder()
                 .chatResponse(processResponse(messagesArray))
                 .userQuery(userQuery)
                 .build();
+
+        String chatAnswer = chatResponse.getChatResponse();
+
+        saveChatDetailsWithContext(userQuery, chatAnswer, contextSections);
+
+        return chatResponse;
     }
 
     private String processResponse(final List<ChatRequestMessage> completedChatHistory) {
@@ -219,4 +232,36 @@ public class ChatService {
             throw new ChatException(tooManyCharactersErrorMessage);
         }
     }
+
+    private void saveChatDetailsWithContext(String userQuery, String chatAnswer, List<String> contextSections) {
+        log.info("Saving chat details for user query: {}", userQuery);
+        try {
+            String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+            String[] words = userQuery.split("\\s+");
+            StringBuilder firstWords = new StringBuilder();
+            for (int i = 0; i < Math.min(6, words.length); i++) {
+                firstWords.append(words[i]);
+                if (i < Math.min(6, words.length) - 1) {
+                    firstWords.append(" ");
+                }
+            }
+            String fileName = dateTime + " " + firstWords + ".json";
+            String dirPath = "src/test/resources/dataset";
+            Files.createDirectories(Paths.get(dirPath));
+            String filePath = dirPath + "/" + fileName.replaceAll("[\\\\/:*?\"<>|]", "_");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("question", userQuery);
+            data.put("answer", chatAnswer);
+            data.put("contexts", contextSections);
+
+            ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
+            writer.writeValue(new File(filePath), data);
+
+            log.info("Chat details saved to file: {}\n", filePath);
+        } catch (Exception e) {
+            log.error("Failed to save chat details: {}", e.getMessage(), e);
+        }
+    }
+
 }
