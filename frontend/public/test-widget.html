@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test USM Chat Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0a392c;
+            text-align: center;
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test USM Chat Widget</h1>
+        
+        <div class="instructions">
+            <h3>Instrucțiuni de utilizare:</h3>
+            <p>Pentru a testa widget-ul pe orice site:</p>
+            <ol>
+                <li>Deschideți site-ul unde doriți să testați widget-ul</li>
+                <li>Deschideți Developer Tools (F12)</li>
+                <li>Mergeți la tab-ul Console</li>
+                <li>Copiați și lipiți următorul cod:</li>
+            </ol>
+            <div class="code">
+                fetch('http://localhost:3000/widget.js').then(r => r.text()).then(code => eval(code))
+            </div>
+            <p>Sau pentru a încărca direct din browser:</p>
+            <div class="code">
+                javascript:(function(){fetch('http://localhost:3000/widget.js').then(r=>r.text()).then(eval)})()
+            </div>
+        </div>
+
+        <p>Acest widget va apărea în colțul din dreapta jos al paginii și va permite utilizatorilor să interacționeze cu asistentul USM.</p>
+        
+        <h3>Caracteristici:</h3>
+        <ul>
+            <li>Design modern și responsive</li>
+            <li>Animații fluide</li>
+            <li>Suport pentru istoricul conversațiilor</li>
+            <li>Indicatori de încărcare</li>
+            <li>Gestionarea erorilor</li>
+        </ul>
+    </div>
+
+    <!-- Widget will be loaded here -->
+    <script src="widget.js"></script>
+</body>
+</html> 
