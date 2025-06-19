@@ -155,107 +155,120 @@ const ChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50">
+    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: 'transparent', position: 'relative' }}>
       {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 rounded-full bg-[#0a392c] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-2xl hover:scale-110"
-      >
-        💬
-      </button>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-16 h-16 rounded-full bg-[#0a392c] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-2xl hover:scale-110"
+          style={{ position: 'absolute', bottom: 20, right: 20, zIndex: 50 }}
+        >
+          💬
+        </button>
+      )}
 
       {/* Chat Container */}
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[450px] h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
-          {/* Header */}
-          <div className="bg-[#0a392c] text-white p-4 rounded-t-lg flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-white animate-pulse"></div>
+        <div style={{ position: 'absolute', bottom: 0, right: 0, width: '100%', height: '100%', minWidth: 0, minHeight: 0, background: 'transparent', borderRadius: 12, zIndex: 100, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+          <div style={{ width: '675px', height: '600px', background: 'white', borderRadius: 12, boxShadow: '0px 8px 32px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column' }}>
+            {/* Header */}
+            <div className="bg-[#0a392c] text-white p-4 rounded-t-lg flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                    <div className="w-3 h-3 rounded-full bg-white animate-pulse"></div>
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#00d084] animate-ping"></div>
                 </div>
-                <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#00d084] animate-ping"></div>
+                <h3 className="text-lg font-semibold flex items-center">
+                  USM Assistant
+                  <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">AI</span>
+                </h3>
               </div>
-              <h3 className="text-lg font-semibold flex items-center">
-                USM Assistant
-                <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">AI</span>
-              </h3>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200 text-xl font-bold"
-            >
-              ×
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                <div
-                  className={`max-w-[85%] rounded-lg p-4 text-base ${
-                    message.role === 'user'
-                      ? 'bg-[#0a392c] text-white text-right'
-                      : 'bg-white text-gray-800 border border-gray-200 shadow-sm text-left'
-                  }`}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setMessages([{ role: 'assistant', content: 'Salut! Sunt asistentul USM. Cum te pot ajuta?' }])}
+                  className="text-white hover:text-[#00d084] text-base font-semibold px-3 py-1 rounded transition-colors border border-white/20 bg-white/10 hover:bg-white/20 flex items-center justify-center"
+                  title="Сбросить чат"
                 >
-                  {message.role === 'user' ? (
-                    message.content
-                  ) : (
-                    <div className="prose prose-base max-w-none text-left usm-widget-prose">
-                      <ReactMarkdown 
-                        remarkPlugins={[remarkGfm]}
-                        components={components}
-                      >
-                        {message.content}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                </div>
+                  <span className="text-xl">⟳</span>
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-white hover:text-gray-200 text-xl font-bold"
+                  title="Закрыть"
+                >
+                  ×
+                </button>
               </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white text-gray-800 rounded-lg p-4 border border-gray-200 shadow-sm text-left">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-lg p-4 text-base ${
+                      message.role === 'user'
+                        ? 'bg-[#0a392c] text-white text-left'
+                        : 'bg-white text-gray-800 border border-gray-200 shadow-sm text-left'
+                    }`}
+                  >
+                    {message.role === 'user' ? (
+                      message.content
+                    ) : (
+                      <div className="prose prose-base max-w-none text-left usm-widget-prose">
+                        <ReactMarkdown 
+                          remarkPlugins={[remarkGfm]}
+                          components={components}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Form */}
-          <form onSubmit={handleSubmit} className="border-t p-4 bg-white">
-            <div className="flex space-x-3">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Scrieți mesajul..."
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-[#0a392c] focus:ring-1 focus:ring-[#0a392c] transition-all duration-200"
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="bg-[#0a392c] text-white px-4 py-3 rounded-lg hover:bg-[#0c4334] focus:outline-none focus:ring-2 focus:ring-[#0a392c] focus:ring-opacity-50 disabled:opacity-50 transition-all duration-200 flex items-center"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white text-gray-800 rounded-lg p-4 border border-gray-200 shadow-sm text-left">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-[#0a392c] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
-          </form>
+
+            {/* Input Form */}
+            <form onSubmit={handleSubmit} className="border-t p-4 bg-white">
+              <div className="flex space-x-3">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Scrieți mesajul..."
+                  className="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-[#0a392c] focus:ring-1 focus:ring-[#0a392c] transition-all duration-200"
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="bg-[#0a392c] text-white px-4 py-3 rounded-lg hover:bg-[#0c4334] focus:outline-none focus:ring-2 focus:ring-[#0a392c] focus:ring-opacity-50 disabled:opacity-50 transition-all duration-200 flex items-center"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

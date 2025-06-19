@@ -111,17 +111,26 @@ const Chat: React.FC = () => {
 
   return (
     <div className="flex flex-col h-[85vh] mt-4 bg-white rounded-lg shadow-lg border border-gray-100">
-      <div className="bg-[#0a392c] text-white p-4 rounded-t-lg flex items-center space-x-3">
-        <div className="relative">
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full bg-white animate-pulse"></div>
+      <div className="bg-[#0a392c] text-white p-4 rounded-t-lg flex items-center space-x-3 justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="relative">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <div className="w-4 h-4 rounded-full bg-white animate-pulse"></div>
+            </div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#00d084] animate-ping"></div>
           </div>
-          <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#00d084] animate-ping"></div>
+          <h2 className="text-xl font-semibold flex items-center">
+            USM Assistant
+            <span className="ml-2 text-sm bg-white/20 px-2 py-0.5 rounded-full">AI</span>
+          </h2>
         </div>
-        <h2 className="text-xl font-semibold flex items-center">
-          USM Assistant
-          <span className="ml-2 text-sm bg-white/20 px-2 py-0.5 rounded-full">AI</span>
-        </h2>
+        <button
+          onClick={() => setMessages([])}
+          className="text-white hover:text-[#00d084] text-base font-semibold px-3 py-1 rounded transition-colors border border-white/20 bg-white/10 hover:bg-white/20 flex items-center justify-center"
+          title="Сбросить чат"
+        >
+          <span className="text-xl">⟳</span>
+        </button>
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((message, index) => (

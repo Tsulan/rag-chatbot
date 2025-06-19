@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test USM Chat Widget</title>
+    <title>Тест USM Chat Widget</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,39 +40,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>Test USM Chat Widget</h1>
+        <h1>Тест USM Chat Widget</h1>
         
         <div class="instructions">
-            <h3>Instrucțiuni de utilizare:</h3>
-            <p>Pentru a testa widget-ul pe orice site:</p>
+            <h3>Инструкция по использованию:</h3>
+            <p>Чтобы протестировать виджет на любом сайте:</p>
             <ol>
-                <li>Deschideți site-ul unde doriți să testați widget-ul</li>
-                <li>Deschideți Developer Tools (F12)</li>
-                <li>Mergeți la tab-ul Console</li>
-                <li>Copiați și lipiți următorul cod:</li>
+                <li>Откройте сайт, на котором хотите протестировать виджет</li>
+                <li>Откройте Инструменты разработчика (F12)</li>
+                <li>Перейдите на вкладку Console</li>
+                <li>Скопируйте и вставьте следующий код:</li>
             </ol>
             <div class="code">
                 fetch('http://localhost:3000/widget.js').then(r => r.text()).then(code => eval(code))
             </div>
-            <p>Sau pentru a încărca direct din browser:</p>
+            <p>Или чтобы загрузить напрямую из браузера:</p>
             <div class="code">
                 javascript:(function(){fetch('http://localhost:3000/widget.js').then(r=>r.text()).then(eval)})()
             </div>
         </div>
 
-        <p>Acest widget va apărea în colțul din dreapta jos al paginii și va permite utilizatorilor să interacționeze cu asistentul USM.</p>
+        <p>Этот виджет появится в правом нижнем углу страницы и позволит пользователям взаимодействовать с ассистентом USM.</p>
         
-        <h3>Caracteristici:</h3>
+        <h3>Возможности:</h3>
         <ul>
-            <li>Design modern și responsive</li>
-            <li>Animații fluide</li>
-            <li>Suport pentru istoricul conversațiilor</li>
-            <li>Indicatori de încărcare</li>
-            <li>Gestionarea erorilor</li>
+            <li>Современный и адаптивный дизайн</li>
+            <li>Плавные анимации</li>
+            <li>Поддержка истории чата</li>
+            <li>Индикаторы загрузки</li>
+            <li>Обработка ошибок</li>
         </ul>
     </div>
 
-    <!-- Widget will be loaded here -->
+    <!-- Виджет будет загружен здесь -->
     <script src="widget.js"></script>
 </body>
 </html> 
